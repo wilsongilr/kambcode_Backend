@@ -1,0 +1,19 @@
+{
+  "name": "homework_c3",
+  "version": "1.0.0",
+  "description": "Tarea clase 3 ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "tarea"
+  ],
+  "author": "WGilDEV",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
