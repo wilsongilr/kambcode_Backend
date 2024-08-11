@@ -1,0 +1,17 @@
+{
+  "name": "homework_c4",
+  "version": "1.0.0",
+  "description": "Tarea backend c4",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "generate-file": "nodemon generator.js",
+    "find-even-number": "nodemon find.js"
+  },
+  "author": "WGilDEV",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
