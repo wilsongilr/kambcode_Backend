@@ -1,10 +1,30 @@
 import express from 'express'
 import { readFileSync } from 'fs';
+import { validateHeaderName } from 'http';
 
 const app = express();
 const port = 3005;
 const datos = JSON.parse(readFileSync('./students.json', 'utf8'));
 app.use(express.json());
+
+
+const middlewarevalidarDatos = (req, res, next) =>  {
+    if (req.body.age < 0 || req.body.name === '' || req.body.name === null) {
+        res.json({ status: 400, message: "Error on given parameters" });
+      } else {
+        next();
+      }
+}
+
+app.post("/books", (req, res, next) => {
+    if (req.body.author && req.body.bookId && req.body.name && req.body.gender) {
+      next();
+    } else {
+      res.json({ status: 400, message: "Error on given parameters" });
+    }
+  });
+
+
 
 app.get('/students', (req, res) => {
     res.send({
@@ -46,7 +66,7 @@ const getMax = (array, attr) => {
     return max;
 };
 
-app.post('/students', (req, res) => {
+app.post('/students', [middlewarevalidarDatos],  (req, res) => {
     const { id, name, age, major } = req.body;
     let maxId = getMax(datos, 'id')
     console.log(maxId);
@@ -58,20 +78,20 @@ app.post('/students', (req, res) => {
         major
     };
 
-    let ageStudent = req.body.age;
-    let nameStudent = req.body.name;
+    // let ageStudent = req.body.age;
+    // let nameStudent = req.body.name;
 
-    if (ageStudent < 0) {
-        return res.json({
-            message: 'value age not valid'
-        })
-    }
+    // if (ageStudent < 0) {
+    //     return res.json({
+    //         message: 'value age not valid'
+    //     })
+    // }
 
-    if (nameStudent === '' || nameStudent === null) {
-        return res.json({
-            message: 'value name not valid'
-        })
-    }
+    // if (nameStudent === '' || nameStudent === null) {
+    //     return res.json({
+    //         message: 'value name not valid'
+    //     })
+    // }
 
 
     datos.push(newId);
@@ -86,7 +106,7 @@ app.post('/students', (req, res) => {
 
 
 
-app.put('/students/:id', (req, res) => {
+app.put('/students/:id', [middlewarevalidarDatos], (req, res) => {
     try {
         const studentupdate = req.body;
         let id = req.params.id;
@@ -101,24 +121,7 @@ app.put('/students/:id', (req, res) => {
 
         const datostUpdate = datos[index];
 
-        let ageStudent = req.body.age;
-        let nameStudent = req.body.name;
-
-        if (ageStudent < 0) {
-            return res.json({
-                message: 'value age not valid'
-            })
-        }
-
-        if (nameStudent === '' || nameStudent === null) {
-            return res.json({
-                message: 'value name not valid'
-            })
-        }
-
-
-
-
+        
         datos[index] = studentupdate;
         res.send({
             status: 200,
